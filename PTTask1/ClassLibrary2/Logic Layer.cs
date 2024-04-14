@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace BusinessProcessLibrary
+﻿namespace BusinessProcessLibrary
 {
     public class BusinessLogic
     {
-        private readonly DataRepository _dataRepository;
+        private readonly IDataRepository _dataRepository;
 
-        public BusinessLogic(DataRepository dataRepository)
+        public BusinessLogic(IDataRepository dataRepository)
         {
             _dataRepository = dataRepository;
         }

@@ -36,41 +36,39 @@ namespace BusinessProcessLibrary
         public User User { get; set; }
     }
 
-    public class DataContext
+    public interface IDataRepository
     {
-        public List<User> Users { get; } = new List<User>();
-        public List<CatalogItem> Catalog { get; } = new List<CatalogItem>();
-        public List<ProcessState> ProcessStates { get; } = new List<ProcessState>();
-        public List<Event> Events { get; } = new List<Event>();
+        void AddUser(User user);
+        void AddCatalogItem(CatalogItem item);
+        void AddProcessState(ProcessState state);
+        void AddEvent(Event @event);
     }
 
-    public class DataRepository
+    public class DataRepository : IDataRepository
     {
-        private readonly DataContext _dataContext;
-
-        public DataRepository(DataContext dataContext)
-        {
-            _dataContext = dataContext;
-        }
+        private readonly List<User> _users = new List<User>();
+        private readonly List<CatalogItem> _catalog = new List<CatalogItem>();
+        private readonly List<ProcessState> _processStates = new List<ProcessState>();
+        private readonly List<Event> _events = new List<Event>();
 
         public void AddUser(User user)
         {
-            _dataContext.Users.Add(user);
+            _users.Add(user);
         }
 
         public void AddCatalogItem(CatalogItem item)
         {
-            _dataContext.Catalog.Add(item);
+            _catalog.Add(item);
         }
 
         public void AddProcessState(ProcessState state)
         {
-            _dataContext.ProcessStates.Add(state);
+            _processStates.Add(state);
         }
 
         public void AddEvent(Event @event)
         {
-            _dataContext.Events.Add(@event);
+            _events.Add(@event);
         }
     }
 }

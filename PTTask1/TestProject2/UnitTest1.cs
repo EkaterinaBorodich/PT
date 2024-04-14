@@ -2,22 +2,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BusinessProcessLibrary;
 using System;
 
-
 namespace BusinessProcessLibraryTests
 {
     [TestClass]
     public class BusinessLogicTests
     {
-        private DataContext _dataContext;
-        private DataRepository _dataRepository;
+        private IDataRepository _dataRepository;
         private BusinessLogic _businessLogic;
 
         [TestInitialize]
         public void Setup()
         {
-            // Initialize DataContext, DataRepository, and BusinessLogic
-            _dataContext = new DataContext();
-            _dataRepository = new DataRepository(_dataContext);
+            // Initialize mock IDataRepository and BusinessLogic
+            _dataRepository = new MockDataRepository();
             _businessLogic = new BusinessLogic(_dataRepository);
 
             // Initialize test data
@@ -34,30 +31,59 @@ namespace BusinessProcessLibraryTests
         [TestMethod]
         public void TestUserRegistration()
         {
-            Assert.AreEqual(1, _dataContext.Users.Count);
-            Assert.AreEqual("John Doe", _dataContext.Users[0].UserName);
+            Assert.AreEqual(1, (_dataRepository as MockDataRepository).Users.Count);
+            Assert.AreEqual("John Doe", (_dataRepository as MockDataRepository).Users[0].UserName);
         }
 
         [TestMethod]
         public void TestCatalogItemAddition()
         {
-            Assert.AreEqual(1, _dataContext.Catalog.Count);
-            Assert.AreEqual("Book", _dataContext.Catalog[0].Description);
+            Assert.AreEqual(1, (_dataRepository as MockDataRepository).Catalog.Count);
+            Assert.AreEqual("Book", (_dataRepository as MockDataRepository).Catalog[0].Description);
         }
 
         [TestMethod]
         public void TestProcessStateUpdate()
         {
-            Assert.AreEqual(1, _dataContext.ProcessStates.Count);
-            Assert.AreEqual("Available", _dataContext.ProcessStates[0].Description);
+            Assert.AreEqual(1, (_dataRepository as MockDataRepository).ProcessStates.Count);
+            Assert.AreEqual("Available", (_dataRepository as MockDataRepository).ProcessStates[0].Description);
         }
 
         [TestMethod]
         public void TestEventRegistration()
         {
             _businessLogic.RegisterEvent(1, "Item added to catalog", 1, 1);
-            Assert.AreEqual(1, _dataContext.Events.Count);
-            Assert.AreEqual("Item added to catalog", _dataContext.Events[0].Description);
+            Assert.AreEqual(1, (_dataRepository as MockDataRepository).Events.Count);
+            Assert.AreEqual("Item added to catalog", (_dataRepository as MockDataRepository).Events[0].Description);
+        }
+    }
+
+    // Mock implementation of IDataRepository for testing
+    public class MockDataRepository : IDataRepository
+    {
+        public List<User> Users { get; } = new List<User>();
+        public List<CatalogItem> Catalog { get; } = new List<CatalogItem>();
+        public List<ProcessState> ProcessStates { get; } = new List<ProcessState>();
+        public List<Event> Events { get; } = new List<Event>();
+
+        public void AddUser(User user)
+        {
+            Users.Add(user);
+        }
+
+        public void AddCatalogItem(CatalogItem item)
+        {
+            Catalog.Add(item);
+        }
+
+        public void AddProcessState(ProcessState state)
+        {
+            ProcessStates.Add(state);
+        }
+
+        public void AddEvent(Event @event)
+        {
+            Events.Add(@event);
         }
     }
 }
