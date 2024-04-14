@@ -1,7 +1,43 @@
 ﻿using System.Collections.Generic;
 
+using System.Collections.Generic;
+
 namespace BusinessProcessLibrary
 {
+    public class User
+    {
+        public int UserId { get; set; }
+        public string UserName { get; set; }
+        // Other relevant user data
+    }
+
+    public class CatalogItem
+    {
+        public int ItemId { get; set; }
+        public string Description { get; set; }
+        // Other relevant item data
+    }
+
+    public class ProcessState
+    {
+        public int StateId { get; set; }
+        public string Description { get; set; }
+        // Other relevant state data
+    }
+
+    public class Event
+    {
+        public int EventId { get; set; }
+        public string Description { get; set; }
+        // Other relevant event data
+
+        public int StateId { get; set; }
+        public ProcessState State { get; set; }
+
+        public int UserId { get; set; }
+        public User User { get; set; }
+    }
+
     public interface IDataRepository
     {
         void AddUser(User user);
