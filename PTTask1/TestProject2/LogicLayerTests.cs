@@ -1,58 +1,117 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BusinessProcessLibrary;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using BusinessProcessLibrary.Data;
+using BusinessProcessLibrary.Logic;
+using System.Collections.Generic;
 
-namespace BusinessProcessLibraryTests
+namespace BusinessProcessLibrary.Tests.Logic
 {
-    [TestClass]
-    public class LogicLayerTests
+    public class MockDataRepository : IDataRepository
     {
-        private IDataRepository _dataRepository;
+        private readonly List<User> _users = new List<User>();
+        private readonly List<CatalogItem> _catalog = new List<CatalogItem>();
+        private readonly List<ProcessState> _processStates = new List<ProcessState>();
+        private readonly List<Event> _events = new List<Event>();
+
+        public void AddUser(User user)
+        {
+            _users.Add(user);
+        }
+
+        public void AddCatalogItem(CatalogItem item)
+        {
+            _catalog.Add(item);
+        }
+
+        public void AddProcessState(ProcessState state)
+        {
+            _processStates.Add(state);
+        }
+
+        public void AddEvent(Event @event)
+        {
+            _events.Add(@event);
+        }
+
+        // Methods for accessing added entities for testing
+        public List<User> GetUsers() => _users;
+        public List<CatalogItem> GetCatalogItems() => _catalog;
+        public List<ProcessState> GetProcessStates() => _processStates;
+        public List<Event> GetEvents() => _events;
+    }
+
+    [TestClass]
+    public class BusinessLogicTests
+    {
         private BusinessLogic _businessLogic;
+        private MockDataRepository _mockDataRepository;
 
         [TestInitialize]
-        public void Setup()
+        public void TestInitialize()
         {
-            _dataRepository = new DataRepository();
-            _businessLogic = new BusinessLogic(_dataRepository);
-
-            InitializeTestData();
-        }
-
-        private void InitializeTestData()
-        {
-            _businessLogic.RegisterUser(1, "John Doe");
-            _businessLogic.AddCatalogItem(1, "Book");
-            _businessLogic.UpdateProcessState(1, "Available");
+            _mockDataRepository = new MockDataRepository();
+            _businessLogic = new BusinessLogic(_mockDataRepository);
         }
 
         [TestMethod]
-        public void TestUserRegistration()
+        public void RegisterUser_AddsUserToDataRepository()
         {
-            Assert.AreEqual(1, (_dataRepository as DataRepository).GetUsers().Count);
-            Assert.AreEqual("John Doe", (_dataRepository as DataRepository).GetUsers()[0].UserName);
+            // Arrange
+            int userId = 1;
+            string userName = "TestUser";
+
+            // Act
+            _businessLogic.RegisterUser(userId, userName);
+
+            // Assert
+            var addedUser = _mockDataRepository.GetUsers().FirstOrDefault(u => u.UserId == userId && u.UserName == userName);
+            Assert.IsNotNull(addedUser);
         }
 
         [TestMethod]
-        public void TestCatalogItemAddition()
+        public void AddCatalogItem_AddsItemToDataRepository()
         {
-            Assert.AreEqual(1, (_dataRepository as DataRepository).GetCatalogItems().Count);
-            Assert.AreEqual("Book", (_dataRepository as DataRepository).GetCatalogItems()[0].Description);
+            // Arrange
+            int itemId = 1;
+            string description = "TestItem";
+
+            // Act
+            _businessLogic.AddCatalogItem(itemId, description);
+
+            // Assert
+            var addedItem = _mockDataRepository.GetCatalogItems().FirstOrDefault(item => item.ItemId == itemId && item.Description == description);
+            Assert.IsNotNull(addedItem);
         }
 
         [TestMethod]
-        public void TestProcessStateUpdate()
+        public void UpdateProcessState_AddsStateToDataRepository()
         {
-            Assert.AreEqual(1, (_dataRepository as DataRepository).GetProcessStates().Count);
-            Assert.AreEqual("Available", (_dataRepository as DataRepository).GetProcessStates()[0].Description);
+            // Arrange
+            int stateId = 1;
+            string description = "TestState";
+
+            // Act
+            _businessLogic.UpdateProcessState(stateId, description);
+
+            // Assert
+            var addedState = _mockDataRepository.GetProcessStates().FirstOrDefault(state => state.StateId == stateId && state.Description == description);
+            Assert.IsNotNull(addedState);
         }
 
         [TestMethod]
-        public void TestEventRegistration()
+        public void RegisterEvent_AddsEventToDataRepository()
         {
-            _businessLogic.RegisterEvent(1, "Item added to catalog", 1, 1);
-            Assert.AreEqual(1, (_dataRepository as DataRepository).GetEvents().Count);
-            Assert.AreEqual("Item added to catalog", (_dataRepository as DataRepository).GetEvents()[0].Description);
+            // Arrange
+            int eventId = 1;
+            string description = "TestEvent";
+            int stateId = 1;
+            int userId = 1;
+
+            // Act
+            _businessLogic.RegisterEvent(eventId, description, stateId, userId);
+
+            // Assert
+            var addedEvent = _mockDataRepository.GetEvents().FirstOrDefault(ev => ev.EventId == eventId && ev.Description == description && ev.StateId == stateId && ev.UserId == userId);
+            Assert.IsNotNull(addedEvent);
         }
     }
 }

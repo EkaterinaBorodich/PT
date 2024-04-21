@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
 using System.Collections.Generic;
 
-namespace BusinessProcessLibrary
+namespace BusinessProcessLibrary.Data
 {
+    // Define the User class representing actors relevant to the business process
     public class User
     {
         public int UserId { get; set; }
@@ -11,6 +11,7 @@ namespace BusinessProcessLibrary
         // Other relevant user data
     }
 
+    // Define the CatalogItem class representing goods descriptions
     public class CatalogItem
     {
         public int ItemId { get; set; }
@@ -18,6 +19,7 @@ namespace BusinessProcessLibrary
         // Other relevant item data
     }
 
+    // Define the ProcessState class representing the current process state
     public class ProcessState
     {
         public int StateId { get; set; }
@@ -25,6 +27,7 @@ namespace BusinessProcessLibrary
         // Other relevant state data
     }
 
+    // Define the Event class representing events contributing to the process state change
     public class Event
     {
         public int EventId { get; set; }
@@ -32,20 +35,24 @@ namespace BusinessProcessLibrary
         // Other relevant event data
 
         public int StateId { get; set; }
-        public ProcessState State { get; set; }
-
         public int UserId { get; set; }
-        public User User { get; set; }
     }
 
+    // Define the IDataRepository interface representing data operations
     public interface IDataRepository
     {
         void AddUser(User user);
         void AddCatalogItem(CatalogItem item);
         void AddProcessState(ProcessState state);
         void AddEvent(Event @event);
+
+        List<User> GetUsers();
+        List<CatalogItem> GetCatalogItems();
+        List<ProcessState> GetProcessStates();
+        List<Event> GetEvents();
     }
 
+    // Define the DataRepository class implementing IDataRepository interface
     public class DataRepository : IDataRepository
     {
         private readonly List<User> _users = new List<User>();
@@ -55,28 +62,50 @@ namespace BusinessProcessLibrary
 
         public void AddUser(User user)
         {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
             _users.Add(user);
         }
 
         public void AddCatalogItem(CatalogItem item)
         {
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
             _catalog.Add(item);
         }
 
         public void AddProcessState(ProcessState state)
         {
+            if (state == null)
+                throw new ArgumentNullException(nameof(state));
             _processStates.Add(state);
         }
 
         public void AddEvent(Event @event)
         {
+            if (@event == null)
+                throw new ArgumentNullException(nameof(@event));
             _events.Add(@event);
         }
 
-        // These methods are added for testing purposes
-        public List<User> GetUsers() => _users;
-        public List<CatalogItem> GetCatalogItems() => _catalog;
-        public List<ProcessState> GetProcessStates() => _processStates;
-        public List<Event> GetEvents() => _events;
+        public List<User> GetUsers()
+        {
+            return _users;
+        }
+
+        public List<CatalogItem> GetCatalogItems()
+        {
+            return _catalog;
+        }
+
+        public List<ProcessState> GetProcessStates()
+        {
+            return _processStates;
+        }
+
+        public List<Event> GetEvents()
+        {
+            return _events;
+        }
     }
 }

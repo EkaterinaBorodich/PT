@@ -1,46 +1,70 @@
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BusinessProcessLibrary;
+using BusinessProcessLibrary.Data;
 
-namespace BusinessProcessLibraryTests
+namespace BusinessProcessLibrary.Tests.Data
 {
     [TestClass]
-    public class DataLayerTests
+    public class DataRepositoryTests
     {
         private IDataRepository _dataRepository;
 
         [TestInitialize]
-        public void Setup()
+        public void TestInitialize()
         {
             _dataRepository = new DataRepository();
         }
 
         [TestMethod]
-        public void TestUserRegistration()
+        public void AddUser_AddsUserToList()
         {
-            _dataRepository.AddUser(new User { UserId = 1, UserName = "John Doe" });
-            Assert.AreEqual(1, (_dataRepository as DataRepository).GetUsers().Count);
+            // Arrange
+            var user = new User { UserId = 1, UserName = "TestUser" };
+
+            // Act
+            _dataRepository.AddUser(user);
+
+            // Assert
+            CollectionAssert.Contains(_dataRepository.GetUsers(), user);
+
         }
 
         [TestMethod]
-        public void TestCatalogItemAddition()
+        public void AddCatalogItem_AddsItemToList()
         {
-            _dataRepository.AddCatalogItem(new CatalogItem { ItemId = 1, Description = "Book" });
-            Assert.AreEqual(1, (_dataRepository as DataRepository).GetCatalogItems().Count);
+            // Arrange
+            var item = new CatalogItem { ItemId = 1, Description = "TestItem" };
+
+            // Act
+            _dataRepository.AddCatalogItem(item);
+
+            // Assert
+            CollectionAssert.Contains(_dataRepository.GetCatalogItems(), item);
         }
 
         [TestMethod]
-        public void TestProcessStateUpdate()
+        public void AddProcessState_AddsStateToList()
         {
-            _dataRepository.AddProcessState(new ProcessState { StateId = 1, Description = "Available" });
-            Assert.AreEqual(1, (_dataRepository as DataRepository).GetProcessStates().Count);
+            // Arrange
+            var state = new ProcessState { StateId = 1, Description = "TestState" };
+
+            // Act
+            _dataRepository.AddProcessState(state);
+
+            // Assert
+            CollectionAssert.Contains(_dataRepository.GetProcessStates(), state);
         }
 
         [TestMethod]
-        public void TestEventRegistration()
+        public void AddEvent_AddsEventToList()
         {
-            _dataRepository.AddEvent(new Event { EventId = 1, Description = "Item added to catalog", StateId = 1, UserId = 1 });
-            Assert.AreEqual(1, (_dataRepository as DataRepository).GetEvents().Count);
+            // Arrange
+            var @event = new Event { EventId = 1, Description = "TestEvent", StateId = 1, UserId = 1 };
+
+            // Act
+            _dataRepository.AddEvent(@event);
+
+            // Assert
+            CollectionAssert.Contains(_dataRepository.GetEvents(), @event);
         }
     }
 }
