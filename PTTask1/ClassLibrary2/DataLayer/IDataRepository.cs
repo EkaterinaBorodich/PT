@@ -25,10 +25,5 @@ namespace BusinessProcessLibrary.Data
         public ICatalogItem GetCatalogItem(int itemId);
         public IProcessState GetProcessState(int stateId);
         public IEvent GetEvent(int eventId);
-
-        public static IDataRepository CreateDataRepository()
-        {
-            return new DataRepository();
-        }
     }
 }

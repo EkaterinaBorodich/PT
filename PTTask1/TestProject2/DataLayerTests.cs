@@ -1,25 +1,26 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BusinessProcessLibrary.Data;
-using System.Reflection;
+using BusinessProcessLibrary.Data.Implementation;
 
 namespace BusinessProcessLibrary.Tests.Data
 {
     [TestClass]
-    public class DataLayerTests
+    public class DataRepositoryTests
     {
+
         [TestMethod]
         public void AddUser_ValidUser_UserAddedToList()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
+            IDataRepository _dataRepository = new DataRepository(); 
             int userId = 1;
             string userName = "John Doe";
 
             // Act
-            dataRepository.AddUser(userId, userName);
+            _dataRepository.AddUser(userId, userName);
 
             // Assert
-            IUser user = dataRepository.GetUser(userId);
+            IUser user = _dataRepository.GetUser(userId);
             Assert.IsNotNull(user);
             Assert.AreEqual(userId, user.UserId);
             Assert.AreEqual(userName, user.UserName);
@@ -29,15 +30,15 @@ namespace BusinessProcessLibrary.Tests.Data
         public void AddCatalogItem_ValidItem_ItemAddedToList()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
+            IDataRepository _dataRepository = new DataRepository();
             int itemId = 1;
             string description = "Example Item";
 
             // Act
-            dataRepository.AddCatalogItem(itemId, description);
+            _dataRepository.AddCatalogItem(itemId, description);
 
             // Assert
-            ICatalogItem item = dataRepository.GetCatalogItem(itemId);
+            ICatalogItem item = _dataRepository.GetCatalogItem(itemId);
             Assert.IsNotNull(item);
             Assert.AreEqual(itemId, item.ItemId);
             Assert.AreEqual(description, item.Description);
@@ -47,15 +48,15 @@ namespace BusinessProcessLibrary.Tests.Data
         public void AddProcessState_ValidState_StateAddedToList()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
+            IDataRepository _dataRepository = new DataRepository();
             int stateId = 1;
             string description = "Example State";
 
             // Act
-            dataRepository.AddProcessState(stateId, description);
+            _dataRepository.AddProcessState(stateId, description);
 
             // Assert
-            IProcessState state = dataRepository.GetProcessState(stateId);
+            IProcessState state = _dataRepository.GetProcessState(stateId);
             Assert.IsNotNull(state);
             Assert.AreEqual(stateId, state.StateId);
             Assert.AreEqual(description, state.Description);
@@ -65,7 +66,7 @@ namespace BusinessProcessLibrary.Tests.Data
         public void AddEvent_ValidEvent_EventAddedToList()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
+            IDataRepository _dataRepository = new DataRepository();
             int eventId = 1;
             string description = "Example Event";
             int stateId = 1;
@@ -73,10 +74,10 @@ namespace BusinessProcessLibrary.Tests.Data
             IDataRepository.EventType type = IDataRepository.EventType.Rent;
 
             // Act
-            dataRepository.AddEvent(eventId, description, stateId, userId, type);
+            _dataRepository.AddEvent(eventId, description, stateId, userId, type);
 
             // Assert
-            IEvent @event = dataRepository.GetEvent(eventId);
+            IEvent @event = _dataRepository.GetEvent(eventId);
             Assert.IsNotNull(@event);
             Assert.AreEqual(eventId, @event.EventId);
             Assert.AreEqual(description, @event.Description);
@@ -89,16 +90,16 @@ namespace BusinessProcessLibrary.Tests.Data
         public void RemoveUser_ExistingUser_UserRemovedFromList()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
+            IDataRepository _dataRepository = new DataRepository();
             int userId = 1;
             string userName = "John Doe";
-            dataRepository.AddUser(userId, userName);
+            _dataRepository.AddUser(userId, userName);
 
             // Act
-            dataRepository.RemoveUser(userId);
+            _dataRepository.RemoveUser(userId);
 
             // Assert
-            IUser user = dataRepository.GetUser(userId);
+            IUser user = _dataRepository.GetUser(userId);
             Assert.IsNull(user);
         }
 
@@ -106,16 +107,16 @@ namespace BusinessProcessLibrary.Tests.Data
         public void RemoveCatalogItem_ExistingItem_ItemRemovedFromList()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
+            IDataRepository _dataRepository = new DataRepository();
             int itemId = 1;
             string description = "Example Item";
-            dataRepository.AddCatalogItem(itemId, description);
+            _dataRepository.AddCatalogItem(itemId, description);
 
             // Act
-            dataRepository.RemoveCatalogItem(itemId);
+            _dataRepository.RemoveCatalogItem(itemId);
 
             // Assert
-            ICatalogItem item = dataRepository.GetCatalogItem(itemId);
+            ICatalogItem item = _dataRepository.GetCatalogItem(itemId);
             Assert.IsNull(item);
         }
 
@@ -123,16 +124,16 @@ namespace BusinessProcessLibrary.Tests.Data
         public void RemoveProcessState_ExistingState_StateRemovedFromList()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
+            IDataRepository _dataRepository = new DataRepository();
             int stateId = 1;
             string description = "Example State";
-            dataRepository.AddProcessState(stateId, description);
+            _dataRepository.AddProcessState(stateId, description);
 
             // Act
-            dataRepository.RemoveProcessState(stateId);
+            _dataRepository.RemoveProcessState(stateId);
 
             // Assert
-            IProcessState state = dataRepository.GetProcessState(stateId);
+            IProcessState state = _dataRepository.GetProcessState(stateId);
             Assert.IsNull(state);
         }
 
@@ -140,19 +141,19 @@ namespace BusinessProcessLibrary.Tests.Data
         public void RemoveEvent_ExistingEvent_EventRemovedFromList()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
+            IDataRepository _dataRepository = new DataRepository();
             int eventId = 1;
             string description = "Example Event";
             int stateId = 1;
             int userId = 1;
             IDataRepository.EventType type = IDataRepository.EventType.Rent;
-            dataRepository.AddEvent(eventId, description, stateId, userId, type);
+            _dataRepository.AddEvent(eventId, description, stateId, userId, type);
 
             // Act
-            dataRepository.RemoveEvent(eventId);
+            _dataRepository.RemoveEvent(eventId);
 
             // Assert
-            IEvent @event = dataRepository.GetEvent(eventId);
+            IEvent @event = _dataRepository.GetEvent(eventId);
             Assert.IsNull(@event);
         }
 
@@ -160,11 +161,11 @@ namespace BusinessProcessLibrary.Tests.Data
         public void GetUser_NonExistentUser_ReturnsNull()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
+            IDataRepository _dataRepository = new DataRepository();
             int userId = 999; // Assuming this user does not exist
 
             // Act
-            IUser user = dataRepository.GetUser(userId);
+            IUser user = _dataRepository.GetUser(userId);
 
             // Assert
             Assert.IsNull(user);
@@ -174,11 +175,11 @@ namespace BusinessProcessLibrary.Tests.Data
         public void GetCatalogItem_NonExistentItem_ReturnsNull()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
+            IDataRepository _dataRepository = new DataRepository();
             int itemId = 999; // Assuming this item does not exist
 
             // Act
-            ICatalogItem item = dataRepository.GetCatalogItem(itemId);
+            ICatalogItem item = _dataRepository.GetCatalogItem(itemId);
 
             // Assert
             Assert.IsNull(item);
@@ -188,11 +189,11 @@ namespace BusinessProcessLibrary.Tests.Data
         public void GetProcessState_NonExistentState_ReturnsNull()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
+            IDataRepository _dataRepository = new DataRepository();
             int stateId = 999; // Assuming this state does not exist
 
             // Act
-            IProcessState state = dataRepository.GetProcessState(stateId);
+            IProcessState state = _dataRepository.GetProcessState(stateId);
 
             // Assert
             Assert.IsNull(state);
@@ -202,11 +203,11 @@ namespace BusinessProcessLibrary.Tests.Data
         public void GetEvent_NonExistentEvent_ReturnsNull()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
+            IDataRepository _dataRepository = new DataRepository();
             int eventId = 999; // Assuming this event does not exist
 
             // Act
-            IEvent @event = dataRepository.GetEvent(eventId);
+            IEvent @event = _dataRepository.GetEvent(eventId);
 
             // Assert
             Assert.IsNull(@event);

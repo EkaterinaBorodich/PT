@@ -3,7 +3,7 @@ using static BusinessProcessLibrary.Data.IDataRepository;
 
 namespace BusinessProcessLibrary.Data.Implementation
 {
-    internal class DataRepository : IDataRepository
+    public class DataRepository : IDataRepository
     {
 
         private readonly List<IUser> _users = new List<IUser>();

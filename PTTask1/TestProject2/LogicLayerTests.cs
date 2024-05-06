@@ -2,19 +2,19 @@
 using BusinessProcessLibrary.Logic;
 using BusinessProcessLibrary.Data;
 using BusinessProcessLibrary.Data.Implementation;
-using System.Reflection;
 
 namespace BusinessProcessLibrary.Tests.Logic
 {
     [TestClass]
     public class BusinessLogicTests
     {
+
         [TestMethod]
         public void RegisterUser_AddsUserToDataRepository()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
-            var businessLogic = IBusinessLogic.CreateBusinessLogic(dataRepository);
+            IDataRepository dataRepository = new DataRepository();
+            IBusinessLogic businessLogic = new BusinessLogic(dataRepository);
             int userId = 1;
             string userName = "John Doe";
 
@@ -32,8 +32,8 @@ namespace BusinessProcessLibrary.Tests.Logic
         public void AddCatalogItem_AddsItemToDataRepository()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
-            var businessLogic = IBusinessLogic.CreateBusinessLogic(dataRepository);
+            IDataRepository dataRepository = new DataRepository();
+            IBusinessLogic businessLogic = new BusinessLogic(dataRepository);
             int itemId = 1;
             string description = "Sample Item";
 
@@ -51,8 +51,8 @@ namespace BusinessProcessLibrary.Tests.Logic
         public void UpdateProcessState_UpdatesStateInDataRepository()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
-            var businessLogic = IBusinessLogic.CreateBusinessLogic(dataRepository);
+            IDataRepository dataRepository = new DataRepository();
+            IBusinessLogic businessLogic = new BusinessLogic(dataRepository);
             int stateId = 1;
             string description = "New Process State";
 
@@ -70,8 +70,8 @@ namespace BusinessProcessLibrary.Tests.Logic
         public void RentEvent_AddsRentEventToDataRepository()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
-            var businessLogic = IBusinessLogic.CreateBusinessLogic(dataRepository);
+            IDataRepository dataRepository = new DataRepository();
+            IBusinessLogic businessLogic = new BusinessLogic(dataRepository);
             int eventId = 1;
             string description = "Renting Event";
             int stateId = 1;
@@ -94,8 +94,8 @@ namespace BusinessProcessLibrary.Tests.Logic
         public void ReturnEvent_AddsReturnEventToDataRepository()
         {
             // Arrange
-            var dataRepository = IDataRepository.CreateDataRepository();
-            var businessLogic = IBusinessLogic.CreateBusinessLogic(dataRepository);
+            IDataRepository dataRepository = new DataRepository();
+            IBusinessLogic businessLogic = new BusinessLogic(dataRepository);
             int eventId = 2;
             string description = "Returning Event";
             int stateId = 1;
