@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using static BusinessProcessLibrary.Data.IDataRepository;
+﻿using static BusinessProcessLibrary.Data.IDataRepository;
 
 namespace BusinessProcessLibrary.Data.Implementation
 {
-    public class DataRepository : IDataRepository
+    internal class DataRepository : IDataRepository
     {
 
         private readonly List<IUser> _users = new List<IUser>();

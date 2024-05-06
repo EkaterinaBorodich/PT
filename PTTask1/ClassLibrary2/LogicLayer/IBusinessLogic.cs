@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using BusinessProcessLibrary.Data;
-
-namespace BusinessProcessLibrary.Logic
+﻿namespace BusinessProcessLibrary.Logic
 {
     public interface IBusinessLogic
     {

@@ -1,19 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BusinessProcessLibrary.Logic;
-using BusinessProcessLibrary.Data;
-using BusinessProcessLibrary.Data.Implementation;
+﻿using BusinessProcessLibrary.Logic;
 
 namespace BusinessProcessLibrary.Tests.Logic
 {
     [TestClass]
     public class BusinessLogicTests
     {
-
         [TestMethod]
         public void RegisterUser_AddsUserToDataRepository()
         {
             // Arrange
-            IDataRepository dataRepository = new DataRepository();
+            IMockDataRepository dataRepository = new MockDataRepository(); // Using MockDataRepository instead of DataRepository
             IBusinessLogic businessLogic = new BusinessLogic(dataRepository);
             int userId = 1;
             string userName = "John Doe";
@@ -22,7 +18,7 @@ namespace BusinessProcessLibrary.Tests.Logic
             businessLogic.RegisterUser(userId, userName);
 
             // Assert
-            IUser user = dataRepository.GetUser(userId);
+            IMockUser user = dataRepository.GetUser(userId);
             Assert.IsNotNull(user);
             Assert.AreEqual(userId, user.UserId);
             Assert.AreEqual(userName, user.UserName);
@@ -32,7 +28,7 @@ namespace BusinessProcessLibrary.Tests.Logic
         public void AddCatalogItem_AddsItemToDataRepository()
         {
             // Arrange
-            IDataRepository dataRepository = new DataRepository();
+            IMockDataRepository dataRepository = new MockDataRepository(); // Using MockDataRepository instead of DataRepository
             IBusinessLogic businessLogic = new BusinessLogic(dataRepository);
             int itemId = 1;
             string description = "Sample Item";
@@ -41,7 +37,7 @@ namespace BusinessProcessLibrary.Tests.Logic
             businessLogic.AddCatalogItem(itemId, description);
 
             // Assert
-            ICatalogItem item = dataRepository.GetCatalogItem(itemId);
+            IMockCatalogItem item = dataRepository.GetCatalogItem(itemId);
             Assert.IsNotNull(item);
             Assert.AreEqual(itemId, item.ItemId);
             Assert.AreEqual(description, item.Description);
@@ -51,7 +47,7 @@ namespace BusinessProcessLibrary.Tests.Logic
         public void UpdateProcessState_UpdatesStateInDataRepository()
         {
             // Arrange
-            IDataRepository dataRepository = new DataRepository();
+            IMockDataRepository dataRepository = new MockDataRepository(); // Using MockDataRepository instead of DataRepository
             IBusinessLogic businessLogic = new BusinessLogic(dataRepository);
             int stateId = 1;
             string description = "New Process State";
@@ -60,7 +56,7 @@ namespace BusinessProcessLibrary.Tests.Logic
             businessLogic.UpdateProcessState(stateId, description);
 
             // Assert
-            IProcessState state = dataRepository.GetProcessState(stateId);
+            IMockProcessState state = dataRepository.GetProcessState(stateId);
             Assert.IsNotNull(state);
             Assert.AreEqual(stateId, state.StateId);
             Assert.AreEqual(description, state.Description);
@@ -70,7 +66,7 @@ namespace BusinessProcessLibrary.Tests.Logic
         public void RentEvent_AddsRentEventToDataRepository()
         {
             // Arrange
-            IDataRepository dataRepository = new DataRepository();
+            IMockDataRepository dataRepository = new MockDataRepository(); // Using MockDataRepository instead of DataRepository
             IBusinessLogic businessLogic = new BusinessLogic(dataRepository);
             int eventId = 1;
             string description = "Renting Event";
@@ -81,20 +77,20 @@ namespace BusinessProcessLibrary.Tests.Logic
             businessLogic.RentEvent(eventId, description, stateId, userId);
 
             // Assert
-            IEvent @event = dataRepository.GetEvent(eventId);
+            IMockEvent @event = dataRepository.GetEvent(eventId);
             Assert.IsNotNull(@event);
             Assert.AreEqual(eventId, @event.EventId);
             Assert.AreEqual(description, @event.Description);
             Assert.AreEqual(stateId, @event.StateId);
             Assert.AreEqual(userId, @event.UserId);
-            Assert.AreEqual(IDataRepository.EventType.Rent, @event.Type);
+            Assert.AreEqual(EventType.Rent, @event.Type);
         }
 
         [TestMethod]
         public void ReturnEvent_AddsReturnEventToDataRepository()
         {
             // Arrange
-            IDataRepository dataRepository = new DataRepository();
+            IMockDataRepository dataRepository = new MockDataRepository(); // Using MockDataRepository instead of DataRepository
             IBusinessLogic businessLogic = new BusinessLogic(dataRepository);
             int eventId = 2;
             string description = "Returning Event";
@@ -105,13 +101,13 @@ namespace BusinessProcessLibrary.Tests.Logic
             businessLogic.ReturnEvent(eventId, description, stateId, userId);
 
             // Assert
-            IEvent @event = dataRepository.GetEvent(eventId);
+            IMockEvent @event = dataRepository.GetEvent(eventId);
             Assert.IsNotNull(@event);
             Assert.AreEqual(eventId, @event.EventId);
             Assert.AreEqual(description, @event.Description);
             Assert.AreEqual(stateId, @event.StateId);
             Assert.AreEqual(userId, @event.UserId);
-            Assert.AreEqual(IDataRepository.EventType.Return, @event.Type);
+            Assert.AreEqual(EventType.Return, @event.Type);
         }
     }
 }
