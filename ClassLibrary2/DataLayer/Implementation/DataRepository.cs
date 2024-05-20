@@ -1,4 +1,7 @@
 ﻿using static BusinessProcessLibrary.Data.IDataRepository;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("TestProject2")]
 
 namespace BusinessProcessLibrary.Data.Implementation
 {
@@ -10,9 +13,9 @@ namespace BusinessProcessLibrary.Data.Implementation
         private readonly List<IProcessState> _processStates = new List<IProcessState>();
         private readonly List<IEvent> _events = new List<IEvent>();
 
-        public void AddUser(int userId, string userName)
+        public void AddUser(IUser user)
         {
-            _users.Add(new User(userId, userName));
+            _users.Add(user);
         }
 
         public void AddCatalogItem(int itemId, string description)
@@ -46,9 +49,8 @@ namespace BusinessProcessLibrary.Data.Implementation
         }
         public void RemoveUser(int userId)
         {
-            var userToRemove = _users.Find(u => u.UserId == userId);
-            if (userToRemove != null)
-                _users.Remove(userToRemove);
+            var user = _users.FirstOrDefault(u => u.UserId == userId);
+            if (user != null) _users.Remove(user);
         }
 
         public void RemoveCatalogItem(int itemId)
@@ -74,7 +76,7 @@ namespace BusinessProcessLibrary.Data.Implementation
 
         public IUser GetUser(int userId)
         {
-            return _users.Find(user => user.UserId == userId);
+            return _users.FirstOrDefault(u => u.UserId == userId);
         }
 
         public ICatalogItem GetCatalogItem(int itemId)

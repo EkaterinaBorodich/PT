@@ -20,6 +20,9 @@
     <ProjectReference Include="..\ClassLibrary2\ClassLibrary2.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PresentationLayer\PresentationLayer.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
