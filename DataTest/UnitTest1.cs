@@ -1,4 +1,6 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Data.DataLayer.API;
+using Data.DataLayer.Implementation;
 
 namespace DataTest
 {
@@ -13,12 +15,13 @@ namespace DataTest
         public static void ClassInitializeMethod(TestContext context)
         {
             string _DBRelativePath = @"LibraryTest.mdf";
-            string _projectRootDir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-            string _DBPath = Path.Combine(_projectRootDir, _DBRelativePath);
+            string _TestingWorkingFolder = Environment.CurrentDirectory;
+           string _DBPath = Path.Combine(_TestingWorkingFolder, _DBRelativePath);
             FileInfo _databaseFile = new FileInfo(_DBPath);
             Assert.IsTrue(_databaseFile.Exists,$"{Environment.CurrentDirectory}");
-            connectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachFilename={_DBPath};Integrated Security = True;Connect Timeout = 30;";
+            connectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDBFilename={_DBPath};Integrated Security = True;Connect Timeout = 30;";
         }
+
         [TestMethod]
         public async Task UserTests()
         {
