@@ -1,6 +1,4 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Data.DataLayer.API;
-using Data.DataLayer.Implementation;
 
 namespace DataTest
 {
@@ -111,6 +109,92 @@ namespace DataTest
             await Assert.ThrowsExceptionAsync<Exception>(async () => await _dataRepository.GetProcessState(stateId));
             await Assert.ThrowsExceptionAsync<Exception>(async () => await _dataRepository.DeleteProcessState(stateId));
 
+        }
+
+        [TestMethod]
+        public async Task AddAndGetEventTest()
+        {
+            int eventId = 1;
+            int stateId = 4;
+            int userId = 1;
+            string description = "event description";
+            string type = "eventType";
+
+            await _dataRepository.AddUser(userId, "John");
+            await _dataRepository.AddProcessState(stateId, "description");
+            await _dataRepository.AddEvent(eventId, description, stateId, userId, type);
+
+            IEvent retrievedEvent = await _dataRepository.GetEvent(eventId);
+
+            Assert.IsNotNull(retrievedEvent);
+            Assert.AreEqual(eventId, retrievedEvent.EventId);
+            Assert.AreEqual(description, retrievedEvent.Description);
+            Assert.AreEqual(stateId, retrievedEvent.StateId);
+            Assert.AreEqual(userId, retrievedEvent.UserId);
+            Assert.AreEqual(type, retrievedEvent.Type);
+
+            await Assert.ThrowsExceptionAsync<Exception>(async () => await _dataRepository.GetEvent(eventId + 1));
+        }
+
+        [TestMethod]
+        public async Task UpdateEventTest()
+        {
+            int eventId = 3;
+            int stateId = 5;
+            int userId = 2;
+            string description = "initial description";
+            string type = "initialType";
+
+            await _dataRepository.AddUser(userId, "John");
+            await _dataRepository.AddProcessState(stateId, "description");
+            await _dataRepository.AddEvent(eventId, description, stateId, userId, type);
+
+            string newDescription = "updated description";
+            string newType = "updatedType";
+
+            await _dataRepository.UpdateEvent(eventId, newDescription, stateId, userId, newType);
+
+            IEvent updatedEvent = await _dataRepository.GetEvent(eventId);
+
+            Assert.IsNotNull(updatedEvent);
+            Assert.AreEqual(eventId, updatedEvent.EventId);
+            Assert.AreEqual(newDescription, updatedEvent.Description);
+            Assert.AreEqual(stateId, updatedEvent.StateId);
+            Assert.AreEqual(userId, updatedEvent.UserId);
+            Assert.AreEqual(newType, updatedEvent.Type);
+
+            await Assert.ThrowsExceptionAsync<Exception>(async () => await _dataRepository.UpdateEvent(eventId + 1, newDescription, stateId, userId, newType));
+        }
+
+        [TestMethod]
+        public async Task DeleteEventTest()
+        {
+            int eventId = 3;
+            int stateId = 6;
+            int userId = 3;
+            string description = "description to delete";
+            string type = "deleteType";
+
+            await _dataRepository.AddUser(userId, "John");
+            await _dataRepository.AddProcessState(stateId, "description");
+            await _dataRepository.AddEvent(eventId, description, stateId, userId, type);
+
+            await _dataRepository.DeleteEvent(eventId);
+
+            await Assert.ThrowsExceptionAsync<Exception>(async () => await _dataRepository.GetEvent(eventId));
+            await Assert.ThrowsExceptionAsync<Exception>(async () => await _dataRepository.DeleteEvent(eventId));
+        }
+
+        [TestMethod]
+        public async Task AddEventWithNonExistentStateOrUserTest()
+        {
+            int eventId = 4;
+            int nonExistentStateId = 999;
+            int nonExistentUserId = 999;
+            string description = "invalid event";
+            string type = "invalidType";
+
+            await Assert.ThrowsExceptionAsync<Exception>(async () => await _dataRepository.AddEvent(eventId, description, nonExistentStateId, nonExistentUserId, type));
         }
     }
 }

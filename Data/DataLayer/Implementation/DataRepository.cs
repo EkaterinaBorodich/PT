@@ -143,6 +143,9 @@ namespace Data.DataLayer.Implementation
 
         public async Task AddEvent(int eventId, string description,int stateId,int userId,string type)
         {
+            description = description.Trim();
+            type = type.Trim();
+
             IProcessState state = await this.GetProcessState(stateId);
             IUser user = await this.GetUser(userId);
 
@@ -161,6 +164,9 @@ namespace Data.DataLayer.Implementation
 
         public async Task UpdateEvent(int eventId,string description, int stateId, int userId,string type )
         {
+            description = description.Trim();
+            type = type.Trim();
+
             IEvent newEvent = new Event(eventId,description, stateId, userId, type);
 
             if (!await this.CheckIfEventExists(newEvent.EventId,type))
@@ -171,13 +177,17 @@ namespace Data.DataLayer.Implementation
 
         public async Task<IEvent> GetEvent(int eventId)
         {
-            IEvent? even = await this.GetEvent(eventId);
+            IEvent? even = await this._context.GetEvent(eventId); 
 
-            if (even is not null)
+            if (even is null)
                 throw new Exception("This event does not exist!");
+
+            even.Description = even.Description.Trim();
+            even.Type = even.Type.Trim();
 
             return even;
         }
+
         public async Task<bool> CheckIfEventExists(int eventId,string type)
         {
             return await this._context.CheckIfEventExists(eventId,type);
