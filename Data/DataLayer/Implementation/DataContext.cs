@@ -159,7 +159,8 @@ internal class DataContext : IDataContext
                 EventId = even.EventId,
                 Description = even.Description,
                 StateId = even.StateId,
-                UserId = even.UserId
+                UserId = even.UserId,
+                Type = even.Type
             };
 
             context.Events.InsertOnSubmit(entity);
@@ -186,6 +187,7 @@ internal class DataContext : IDataContext
             toUpdate.Description = even.Description;
             toUpdate.StateId = even.StateId;
             toUpdate.UserId = even.UserId;
+            toUpdate.Type = even.Type;
 
             await Task.Run(() => context.SubmitChanges());
         }

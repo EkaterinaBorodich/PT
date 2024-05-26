@@ -27,14 +27,16 @@ namespace Data.DataLayer.Implementation
         public async Task RemoveUser(int userId)
         {
             if(!await this.CheckIfUserExists(userId))
-                await this._context.RemoveUser(userId);
+                throw new Exception("This user does not exist");
+            await this._context.RemoveUser(userId);
         }
 
         public async Task UpdateUser(int userId,string userName)
         {
             IUser user = new User(userId, userName);
             if (!await this.CheckIfUserExists(user.UserId))
-                await this._context.UpdateUser(user);
+                throw new Exception("This user does not exist");
+            await this._context.UpdateUser(user);
         }
 
         public async Task<IUser> GetUser(int userId)
@@ -112,6 +114,7 @@ namespace Data.DataLayer.Implementation
             IUser user = await this.GetUser(userId);
 
             IEvent newEvent = new Event(eventId,description,stateId,userId,type);
+
             await this._context.AddEvent(newEvent);
         }
 
@@ -146,6 +149,7 @@ namespace Data.DataLayer.Implementation
         {
             return await this._context.CheckIfEventExists(eventId,type);
         }
+
         #endregion Event
 
     }
