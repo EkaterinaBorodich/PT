@@ -2,7 +2,7 @@
 {
     public interface IProcessState
     {
-        int StateId { get; }
+        int StateId { get; set; }
         string Description { get; set; }
     }
 }

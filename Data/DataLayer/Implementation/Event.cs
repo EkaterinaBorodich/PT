@@ -12,10 +12,10 @@ namespace Data.DataLayer.Implementation
             UserId = userId;
             Type = type;
         }
-        public int EventId { get; }
+        public int EventId { get; set; }
         public string Description { get; set; }
-        public int StateId { get; }
-        public int UserId { get; }
+        public int StateId { get; set; }
+        public int UserId { get; set; }
 
         public string Type { get; set; }
     }

@@ -48,12 +48,12 @@ internal class DataContext : IDataContext
         }
     }
 
-    public async Task RemoveUser(int UserId)
+    public async Task DeleteUser(int UserId)
     {
         using(LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            Database.User toRemove = (from  u in context.Users  where u.UserId == UserId select u).FirstOrDefault()!;
-            context.Users.DeleteOnSubmit(toRemove);
+            Database.User toDelete = (from  u in context.Users  where u.UserId == UserId select u).FirstOrDefault()!;
+            context.Users.DeleteOnSubmit(toDelete);
             await Task.Run(() => context.SubmitChanges());
         }
     }
@@ -89,6 +89,64 @@ internal class DataContext : IDataContext
 
     #endregion User 
 
+    #region CatalogItem
+    public async Task AddCatalogItem(ICatalogItem item)
+    {
+        using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
+        {
+            Database.CatalogItem entity = new Database.CatalogItem()
+            {
+                ItemId = item.ItemId,
+                Description = item.Description,
+            };
+
+            context.CatalogItems.InsertOnSubmit(entity);
+
+            await Task.Run(() => context.SubmitChanges());
+        }
+    }
+    public async Task DeleteCatalogItem(int itemId)
+    {
+        using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
+        {
+            Database.CatalogItem toDelete = (from c in context.CatalogItems where c.ItemId == itemId select c).FirstOrDefault()!;
+
+            context.CatalogItems.DeleteOnSubmit(toDelete);
+
+            await Task.Run(() => context.SubmitChanges());
+        }
+    }
+    public async Task UpdateCatalogItem(ICatalogItem item)
+    {
+        using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
+        {
+            Database.CatalogItem toUpdate = (from c in context.CatalogItems where c.ItemId == item.ItemId select c).FirstOrDefault()!;
+
+            toUpdate.Description = item.Description;
+
+            await Task.Run(() => context.SubmitChanges());
+        }
+    }
+
+    public async Task<ICatalogItem?> GetCatalogItem(int itemId)
+    {
+        using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
+        {
+            Database.CatalogItem? item = await Task.Run(() =>
+            {
+                IQueryable<Database.CatalogItem> query =
+                    from c in context.CatalogItems
+                    where c.ItemId == itemId
+                    select c;
+
+                return query.FirstOrDefault();
+            });
+
+            return item is not null ? new CatalogItem(item.ItemId,item.Description) : null;
+        }
+    }
+    #endregion CatalogItem
+
     #region ProcessState
 
     public async Task AddProcessState(IProcessState processState)
@@ -105,12 +163,12 @@ internal class DataContext : IDataContext
         }
     }
 
-    public async Task RemoveProcessState(int StateId)
+    public async Task DeleteProcessState(int StateId)
     {
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            Database.ProcessState toRemove = (from ps in context.ProcessStates where ps.StateId == StateId select ps).FirstOrDefault()!;
-            context.ProcessStates.DeleteOnSubmit(toRemove);
+            Database.ProcessState toDelete = (from ps in context.ProcessStates where ps.StateId == StateId select ps).FirstOrDefault()!;
+            context.ProcessStates.DeleteOnSubmit(toDelete);
             await Task.Run(() => context.SubmitChanges());
         }
     }
@@ -169,12 +227,12 @@ internal class DataContext : IDataContext
         }
     }
 
-    public async Task RemoveEvent(int EventId)
+    public async Task DeleteEvent(int EventId)
     {
         using(LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            Database.Event toRemove = (from e in context.Events where e.EventId == EventId select e).FirstOrDefault()!;
-            context.Events.DeleteOnSubmit(toRemove);
+            Database.Event toDelete = (from e in context.Events where e.EventId == EventId select e).FirstOrDefault()!;
+            context.Events.DeleteOnSubmit(toDelete);
             await Task.Run(() => context.SubmitChanges());
         }
     }
@@ -218,10 +276,10 @@ internal class DataContext : IDataContext
         return (await this.GetUser(userId)) != null;
     }
 
-    /*public async Task<bool> CheckIfCtalogItemExists(int itemId)
+    public async Task<bool> CheckIfCatalogItemExists(int itemId)
     {
         return (await this.GetCatalogItem(itemId)) != null;
-    }*/
+    }
 
     public async Task<bool> CheckIfProcessStateExists(int stateId)
     {

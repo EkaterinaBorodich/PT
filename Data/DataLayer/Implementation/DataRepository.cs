@@ -24,11 +24,11 @@ namespace Data.DataLayer.Implementation
             await this._context.AddUser(user);
         }
 
-        public async Task RemoveUser(int userId)
+        public async Task DeleteUser(int userId)
         {
             if(!await this.CheckIfUserExists(userId))
                 throw new Exception("This user does not exist");
-            await this._context.RemoveUser(userId);
+            await this._context.DeleteUser(userId);
         }
 
         public async Task UpdateUser(int userId,string userName)
@@ -56,13 +56,46 @@ namespace Data.DataLayer.Implementation
 
         #region CatalogItem
 
-        /*
-         
-         public async Task<bool> CheckIfProductExists(int itemId)
+        public async Task AddCatalogItem(int itemId, string description)
+        {
+            ICatalogItem item = new CatalogItem(itemId,description);
+
+            await this._context.AddCatalogItem(item);
+        }
+
+        public async Task DeleteCatalogItem(int itemId)
+        {
+            if (!await this.CheckIfCatalogItemExists(itemId))
+                throw new Exception("This item does not exist");
+
+            await this._context.DeleteCatalogItem(itemId);
+        }
+
+        public async Task UpdateCatalogItem(int itemId, string description)
+        {
+            ICatalogItem item = new CatalogItem(itemId,description);
+
+            if (!await this.CheckIfCatalogItemExists(item.ItemId))
+                throw new Exception("This item does not exist");
+
+            await this._context.UpdateCatalogItem(item);
+        }
+
+        public async Task<ICatalogItem> GetCatalogItem(int itemId)
+        {
+            ICatalogItem? item = await this._context.GetCatalogItem(itemId);
+
+            if (item is null)
+                throw new Exception("This item does not exist!");
+
+            return item;
+        }
+
+        public async Task<bool> CheckIfCatalogItemExists(int itemId)
         {
             return await this._context.CheckIfCatalogItemExists(itemId);
         }
-        */
+        
 
         #endregion CatalogItem
 
@@ -75,12 +108,12 @@ namespace Data.DataLayer.Implementation
             await this._context.AddProcessState(state);
         }
 
-        public async Task RemoveProcessState(int stateId)
+        public async Task DeleteProcessState(int stateId)
         {
             if (!await this.CheckIfProcessStateExists(stateId))
                 throw new Exception("This state does not exist");
 
-            await this._context.RemoveProcessState(stateId);
+            await this._context.DeleteProcessState(stateId);
         }
 
         public async Task UpdateProcessState(int stateId, string description)
@@ -118,11 +151,11 @@ namespace Data.DataLayer.Implementation
             await this._context.AddEvent(newEvent);
         }
 
-        public async Task RemoveEvent(int eventId)
+        public async Task DeleteEvent(int eventId)
         {
             if (!await this.CheckIfEventExists(eventId,"Rent"))
                 throw new Exception("This event does not exist");
-            await this._context.RemoveEvent(eventId);
+            await this._context.DeleteEvent(eventId);
 
         }
 

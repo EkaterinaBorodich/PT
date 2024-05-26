@@ -2,7 +2,7 @@
 {
     public interface ICatalogItem
     {
-        int ItemId { get; }
+        int ItemId { get; set; }
         string Description { get; set; }
     }
 }

@@ -24,4 +24,10 @@
       <Association Name="User_Event" Member="User" ThisKey="UserId" OtherKey="UserId" Type="User" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.CatalogItems" Member="CatalogItems">
+    <Type Name="CatalogItem">
+      <Column Name="ItemId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
 </Database>

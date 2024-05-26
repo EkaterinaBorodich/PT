@@ -17,26 +17,26 @@ public interface IDataContext
     #region User 
 
     Task AddUser(IUser user);
-    Task RemoveUser(int UserId);
+    Task DeleteUser(int UserId);
     Task UpdateUser(IUser user);
     Task <IUser?> GetUser(int UserId);
 
     #endregion User 
 
-   /* #region CatalogItem 
+    #region CatalogItem 
 
     Task AddCatalogItem(ICatalogItem catalogItem);
-    Task RemoveCatalogItem(int ItemId);
+    Task DeleteCatalogItem(int ItemId);
     Task UpdateCatalogItem(ICatalogItem catalogItem);
     Task <ICatalogItem?> GetCatalogItem(int ItemId);
 
-    #endregion CatalogItem */
+    #endregion CatalogItem 
 
     #region ProcessState 
 
     Task AddProcessState(IProcessState processState);
 
-    Task RemoveProcessState(int StateId);
+    Task DeleteProcessState(int StateId);
 
     Task UpdateProcessState(IProcessState processState);
 
@@ -48,7 +48,7 @@ public interface IDataContext
     #region Event 
 
     Task AddEvent(IEvent even);
-    Task RemoveEvent(int EventId);
+    Task DeleteEvent(int EventId);
     Task UpdateEvent(IEvent even);
     Task<IEvent?> GetEvent(int EventId);
 
@@ -57,7 +57,7 @@ public interface IDataContext
 
     Task<bool> CheckIfUserExists(int id);
 
-    /*Task<bool> CheckIfCatalogItemExists(int id);*/
+    Task<bool> CheckIfCatalogItemExists(int id);
 
     Task<bool> CheckIfProcessStateExists(int id);
 

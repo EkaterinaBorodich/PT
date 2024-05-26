@@ -34,5 +34,11 @@
         <classShapeMoniker Id="3a79714f-0a04-4454-8dee-46588e4c6aa8" />
       </nodes>
     </associationConnector>
+    <classShape Id="7eba05ec-c298-44b2-91dc-b70525323d9d" absoluteBounds="4.875, 3.625, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/LibraryDataContext/CatalogItem" />
+      <nestedChildShapes>
+        <elementListCompartment Id="591c1643-ef33-4d55-8bd8-d11bbec442f7" absoluteBounds="4.89, 4.085, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

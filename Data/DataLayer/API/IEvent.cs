@@ -2,10 +2,10 @@
 {
     public interface IEvent
     {
-        int EventId { get; }
+        int EventId { get; set; }
         string Description { get; set; }
-        int StateId { get; }
-        int UserId { get; }
+        int StateId { get; set; }
+        int UserId { get; set; }
         public string Type { get; set; }
     }
 }

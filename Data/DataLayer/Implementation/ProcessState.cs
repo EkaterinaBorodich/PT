@@ -4,7 +4,7 @@ namespace Data.DataLayer.Implementation
 {
     internal class ProcessState : IProcessState
     {
-        public int StateId { get; }
+        public int StateId { get; set; }
         public string Description { get; set; }
 
         public ProcessState(int stateId, string description)

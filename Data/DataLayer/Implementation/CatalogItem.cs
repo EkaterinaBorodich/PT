@@ -4,7 +4,7 @@ namespace Data.DataLayer.Implementation
 {
     internal class CatalogItem : ICatalogItem
     {
-        public int ItemId { get; }
+        public int ItemId { get; set; }
         public string Description { get; set; }
 
         public CatalogItem(int itemId, string description)
