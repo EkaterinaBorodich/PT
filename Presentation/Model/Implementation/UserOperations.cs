@@ -1,10 +1,5 @@
 ﻿using Presentation.Model.API;
 using Services.API;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Model.Implementation
 {
@@ -12,7 +7,7 @@ namespace Presentation.Model.Implementation
     {
         private IUserCRUD _userCRUD;
 
-        public UserOperations(IUserCRUD? userCrud)
+        public UserOperations(IUserCRUD? userCrud = null)
         {
             this._userCRUD = userCrud ?? IUserCRUD.CreateUserCRUD();
         }

@@ -1,0 +1,22 @@
+<Window x:Class="Presentation.View.EventView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Presentation"
+        mc:Ignorable="d"
+        Title="EventView" Height="350" Width="525">
+    <Grid>
+        <StackPanel>
+            <TextBox Text="{Binding EventId, UpdateSourceTrigger=PropertyChanged}" ToolTip ="Event ID"/>
+            <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" ToolTip ="Description"/>
+            <TextBox Text="{Binding StateId, UpdateSourceTrigger=PropertyChanged}" ToolTip ="State ID"/>
+            <TextBox Text="{Binding UserId, UpdateSourceTrigger=PropertyChanged}" ToolTip ="User ID"/>
+            <TextBox Text="{Binding Type, UpdateSourceTrigger=PropertyChanged}" ToolTip ="Type"/>
+            <Button Content="Add Event" Command="{Binding AddEventCommand}"/>
+            <Button Content="Update Event" Command="{Binding UpdateEventCommand}"/>
+            <Button Content="Delete Event" Command="{Binding DeleteEventCommand}"/>
+            <Button Content="Load Event" Command="{Binding LoadEventCommand}" CommandParameter="{Binding EventId}"/>
+        </StackPanel>
+    </Grid>
+</Window>

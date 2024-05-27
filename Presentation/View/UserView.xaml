@@ -1,0 +1,19 @@
+<Window x:Class="Presentation.View.UserView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Presentation"
+        mc:Ignorable="d"
+        Title="UserView" Height="350" Width="525">
+    <Grid>
+        <StackPanel>
+            <TextBox Text="{Binding UserId, UpdateSourceTrigger=PropertyChanged}" ToolTip="User ID"/>
+            <TextBox Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}" ToolTip="User Name"/>
+            <Button Content="Add User" Command="{Binding AddUserCommand}"/>
+            <Button Content="Update User" Command="{Binding UpdateUserCommand}"/>
+            <Button Content="Delete User" Command="{Binding DeleteUserCommand}"/>
+            <Button Content="Load User" Command="{Binding LoadUserCommand}" CommandParameter="{Binding UserId}"/>
+        </StackPanel>
+    </Grid>
+</Window>

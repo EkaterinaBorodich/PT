@@ -1,0 +1,19 @@
+<Window x:Class="Presentation.View.ProcessStateView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Presentation"
+        mc:Ignorable="d"
+        Title="ProcessStateView" Height="350" Width="525">
+    <Grid>
+        <StackPanel>
+            <TextBox Text="{Binding StateId, UpdateSourceTrigger=PropertyChanged}" ToolTip="State ID"/>
+            <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" ToolTip="Description"/>
+            <Button Content="Add State" Command="{Binding AddProcessStateCommand}"/>
+            <Button Content="Update State" Command="{Binding UpdateProcessStateCommand}"/>
+            <Button Content="Delete State" Command="{Binding DeleteProcessStateCommand}"/>
+            <Button Content="Load State" Command="{Binding LoadProcessStateCommand}" CommandParameter="{Binding StateId}"/>
+        </StackPanel>
+    </Grid>
+</Window>
