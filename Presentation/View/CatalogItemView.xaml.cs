@@ -8,6 +8,7 @@ namespace Presentation.View
     {
         public CatalogItemView()
         {
+            InitializeComponent();
             DataContext = new CatalogItemViewModel(new CatalogItemOperations());
         }
     }

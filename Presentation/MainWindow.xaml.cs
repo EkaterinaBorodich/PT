@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Presentation.Model.Implementation;
+using Presentation.ViewModel;
+using Services.API;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,29 +22,30 @@ namespace Presentation.View
     {
         public MainWindowView()
         {
+            InitializeComponent();
         }
 
         private void OpenCatalogItemView(object sender, RoutedEventArgs e)
         {
-            var catalogItemView = new CatalogItemView();
+            CatalogItemView catalogItemView = new CatalogItemView();
             catalogItemView.Show();
         }
 
         private void OpenEventView(object sender, RoutedEventArgs e)
         {
-            var eventView = new EventView();
+            EventView eventView = new EventView();
             eventView.Show();
         }
 
         private void OpenProcessStateView(object sender, RoutedEventArgs e)
         {
-            var processStateView = new ProcessStateView();
+            ProcessStateView processStateView = new ProcessStateView();
             processStateView.Show();
         }
 
         private void OpenUserView(object sender, RoutedEventArgs e)
         {
-            var userView = new UserView();
+            UserView userView = new UserView();
             userView.Show();
         }
     }

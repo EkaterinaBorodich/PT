@@ -8,6 +8,7 @@ namespace Presentation.View
     {
         public UserView()
         {
+            InitializeComponent();
             DataContext = new UserViewModel(new UserOperations());
         }
     }

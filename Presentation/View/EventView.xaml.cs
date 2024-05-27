@@ -8,6 +8,7 @@ namespace Presentation.View
     {
         public EventView()
         {
+            InitializeComponent();
             DataContext = new EventViewModel(new EventOperations());
         }
     }

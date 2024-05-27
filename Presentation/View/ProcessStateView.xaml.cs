@@ -8,6 +8,7 @@ namespace Presentation.View
     {
         public ProcessStateView()
         {
+            InitializeComponent();
             DataContext = new ProcessStateViewModel(new ProcessStateOperations());
         }
     }
