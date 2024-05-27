@@ -1,4 +1,4 @@
-﻿using Presentation.Model.Implementation;
+﻿using Presentation.Model.API;
 using Presentation.ViewModel;
 using System.Windows;
 
@@ -9,7 +9,7 @@ namespace Presentation.View
         public CatalogItemView()
         {
             InitializeComponent();
-            DataContext = new CatalogItemViewModel(new CatalogItemOperations());
+            DataContext = new CatalogItemViewModel(ICatalogItemOperations.CreateModelOperation());
         }
     }
 }

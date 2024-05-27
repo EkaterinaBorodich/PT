@@ -1,4 +1,4 @@
-﻿using Presentation.Model.Implementation;
+﻿using Presentation.Model.API;
 using Presentation.ViewModel;
 using System.Windows;
 
@@ -9,7 +9,7 @@ namespace Presentation.View
         public EventView()
         {
             InitializeComponent();
-            DataContext = new EventViewModel(new EventOperations());
+            DataContext = new EventViewModel(IEventOperations.CreateModelOperation());
         }
     }
 }
