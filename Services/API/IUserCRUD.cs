@@ -19,5 +19,7 @@ namespace Services.API
         Task DeleteUser(int userId);
         Task UpdateUser(int userId, string userName);
         Task<IUserDTO> GetUser(int userId);
+
+        Task<Dictionary<int, IUserDTO>> GetAllUsers();
     }
 }

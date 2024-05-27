@@ -19,5 +19,6 @@ namespace Presentation.Model.API
         Task DeleteProcessState(int stateId);
         Task UpdateProcessState(int stateId, string description);
         Task<IProcessStateModel> GetProcessState(int stateId);
+        Task<Dictionary<int, IProcessStateModel>> GetAllProcessStates();
     }
 }

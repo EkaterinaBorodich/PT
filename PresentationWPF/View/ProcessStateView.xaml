@@ -1,0 +1,35 @@
+<Window x:Class="Presentation.View.ProcessStateView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Presentation"
+        mc:Ignorable="d"
+        Title="ProcessStateView" Height="600" Width="800">
+    <Grid>
+        <GroupBox Header="Process State" Margin="10,10,10,5">
+            <StackPanel>
+                <TextBlock Text="StateId:" Margin="5"/>
+                <TextBox Text="{Binding StateId, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+
+                <TextBlock Text="Description:" Margin="5"/>
+                <TextBox Text="{Binding ProcessStateDescription, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                    <Button Content="Add" Command="{Binding AddProcessStateCommand}" Margin="5"/>
+                    <Button Content="Update" Command="{Binding UpdateProcessStateCommand}" Margin="5"/>
+                    <Button Content="Delete" Command="{Binding DeleteProcessStateCommand}" Margin="5"/>
+                </StackPanel>
+
+                <ListView ItemsSource="{Binding ProcessStates}" Margin="5" SelectedItem="{Binding SelectedProcessState}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="StateId" DisplayMemberBinding="{Binding stateId}" Width="100"/>
+                            <GridViewColumn Header="Description" DisplayMemberBinding="{Binding description}" Width="200"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</Window>

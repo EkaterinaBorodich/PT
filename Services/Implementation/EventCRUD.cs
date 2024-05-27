@@ -41,5 +41,16 @@ namespace Services.Implementation
         {
             return this.Map(await this._repository.GetEvent(eventId));
         }
+        public async Task<Dictionary<int, IEventDTO>> GetAllEvents()
+        {
+            Dictionary<int, IEventDTO> result = new Dictionary<int, IEventDTO>();
+
+            foreach (IEvent item in (await this._repository.GetAllEvents()).Values)
+            {
+                result.Add(item.EventId, this.Map(item));
+            }
+
+            return result;
+        }
     }
 }

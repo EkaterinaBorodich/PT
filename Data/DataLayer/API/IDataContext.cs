@@ -20,6 +20,7 @@ public interface IDataContext
     Task DeleteUser(int UserId);
     Task UpdateUser(IUser user);
     Task <IUser?> GetUser(int UserId);
+    Task<Dictionary<int, IUser>> GetAllUsers();
 
     #endregion User 
 
@@ -29,6 +30,7 @@ public interface IDataContext
     Task DeleteCatalogItem(int ItemId);
     Task UpdateCatalogItem(ICatalogItem catalogItem);
     Task <ICatalogItem?> GetCatalogItem(int ItemId);
+    Task<Dictionary<int, ICatalogItem>> GetAllCatalogItems();
 
     #endregion CatalogItem 
 
@@ -41,6 +43,7 @@ public interface IDataContext
     Task UpdateProcessState(IProcessState processState);
 
     Task <IProcessState?> GetProcessState(int StateId);
+    Task<Dictionary<int, IProcessState>> GetAllProcessStates();
 
 
     #endregion ProcessState 
@@ -51,6 +54,7 @@ public interface IDataContext
     Task DeleteEvent(int EventId);
     Task UpdateEvent(IEvent even);
     Task<IEvent?> GetEvent(int EventId);
+    Task<Dictionary<int, IEvent>> GetAllEvents();
 
 
     #endregion Event 

@@ -35,5 +35,16 @@ namespace Services.Implementation
         {
             return this.Map(await this._repository.GetProcessState(stateId));
         }
+        public async Task<Dictionary<int, IProcessStateDTO>> GetAllProcessStates()
+        {
+            Dictionary<int, IProcessStateDTO> result = new Dictionary<int, IProcessStateDTO>();
+
+            foreach (IProcessState item in (await this._repository.GetAllProcessStates()).Values)
+            {
+                result.Add(item.StateId, this.Map(item));
+            }
+
+            return result;
+        }
     }
 }

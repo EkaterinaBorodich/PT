@@ -1,112 +1,121 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Presentation.Model.API;
+﻿using Presentation.Model.API;
+using Presentation.Model.Implementation;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Presentation.ViewModel
 {
     public class EventViewModel : INotifyPropertyChanged
     {
-        private readonly IEventOperations _eventOperations;
+        private IEventOperations _eventOperations;
+
+        public EventViewModel()
+        {
+            _eventOperations = IEventOperations.CreateModelOperation(); // Correctly initialize the private field
+            Events = new ObservableCollection<IEventModel>();
+            AddEventCommand = new RelayCommand(async () => await AddEvent());
+            UpdateEventCommand = new RelayCommand(async () => await UpdateEvent());
+            DeleteEventCommand = new RelayCommand(async () => await DeleteEvent());
+            LoadEventsCommand = new RelayCommand(async () => await LoadEvents());
+            LoadEventsCommand.Execute(null); // Load events initially
+        }
 
         private int _eventId;
-        private string _description;
-        private int _stateId;
-        private int _userId;
-        private string _type;
-
         public int EventId
         {
-            get => _eventId;
-            set
-            {
-                _eventId = value;
-                OnPropertyChanged();
-            }
+            get { return _eventId; }
+            set { _eventId = value; OnPropertyChanged(); }
         }
 
-        public string Description
+        private string _description;
+        public string EventDescription
         {
-            get => _description;
-            set
-            {
-                _description = value;
-                OnPropertyChanged();
-            }
+            get { return _description; }
+            set { _description = value; OnPropertyChanged(); }
         }
 
+        private int _stateId;
         public int StateId
         {
-            get => _stateId;
-            set
-            {
-                _stateId = value;
-                OnPropertyChanged();
-            }
+            get { return _stateId; }
+            set { _stateId = value; OnPropertyChanged(); }
         }
 
+        private int _userId;
         public int UserId
         {
-            get => _userId;
+            get { return _userId; }
+            set { _userId = value; OnPropertyChanged(); }
+        }
+
+        private string _type;
+        public string Type
+        {
+            get { return _type; }
+            set { _type = value; OnPropertyChanged(); }
+        }
+
+        private IEventModel _selectedEvent;
+        public IEventModel SelectedEvent
+        {
+            get { return _selectedEvent; }
             set
             {
-                _userId = value;
+                _selectedEvent = value;
+                if (_selectedEvent != null)
+                {
+                    EventId = _selectedEvent.eventId;
+                    EventDescription = _selectedEvent.description;
+                    StateId = _selectedEvent.stateId;
+                    UserId = _selectedEvent.userId;
+                    Type = _selectedEvent.Type;
+                }
                 OnPropertyChanged();
             }
         }
 
-        public string Type
-        {
-            get => _type;
-            set
-            {
-                _type = value;
-                OnPropertyChanged();
-            }
-        }
+        public ObservableCollection<IEventModel> Events { get; }
 
         public ICommand AddEventCommand { get; }
         public ICommand UpdateEventCommand { get; }
         public ICommand DeleteEventCommand { get; }
-        public ICommand LoadEventCommand { get; }
-
-        public EventViewModel(IEventOperations eventOperations)
-        {
-            _eventOperations = eventOperations;
-            AddEventCommand = new RelayCommand(async () => await AddEvent());
-            UpdateEventCommand = new RelayCommand(async () => await UpdateEvent());
-            DeleteEventCommand = new RelayCommand(async () => await DeleteEvent());
-            LoadEventCommand = new RelayCommand<int>(async (eventId) => await LoadEvent(eventId));
-        }
+        public ICommand LoadEventsCommand { get; }
 
         public async Task AddEvent()
         {
-            await _eventOperations.AddEvent(EventId, Description, StateId, UserId, Type);
+            await _eventOperations.AddEvent(EventId, EventDescription, StateId, UserId, Type);
+            await LoadEvents();
         }
 
         public async Task UpdateEvent()
         {
-            await _eventOperations.UpdateEvent(EventId, Description, StateId, UserId, Type);
+            await _eventOperations.UpdateEvent(EventId, EventDescription, StateId, UserId, Type);
+            await LoadEvents();
         }
 
         public async Task DeleteEvent()
         {
             await _eventOperations.DeleteEvent(EventId);
+            await LoadEvents();
         }
 
-        public async Task LoadEvent(int eventId)
+        public async Task LoadEvents()
         {
-            var eventItem = await _eventOperations.GetEvent(eventId);
-            EventId = eventItem.eventId;
-            Description = eventItem.description;
-            StateId = eventItem.stateId;
-            UserId = eventItem.userId;
-            Type = eventItem.Type;
+            var events = await _eventOperations.GetAllEvents();
+
+            Events.Clear();
+
+            foreach (var ev in events.Values)
+            {
+                Events.Add(ev);
+            }
+        }
+
+        internal void SetOperations(IEventOperations eventOperations)
+        {
+            _eventOperations = eventOperations;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -26,6 +26,11 @@ internal class MockDataRepository : IDataRepository
     {
         return await Task.FromResult(Users[userId]);
     }
+
+    public async Task<Dictionary<int, IUser>> GetAllUsers()
+    {
+        return await Task.FromResult(Users);
+    }
     #endregion User CRUD
 
     #region CatalogItem CRUD
@@ -47,6 +52,10 @@ internal class MockDataRepository : IDataRepository
     {
         return await Task.FromResult(Items[itemId]);
     }
+    public async Task<Dictionary<int, ICatalogItem>> GetAllCatalogItems()
+    {
+        return await Task.FromResult(Items);
+    }
     #endregion CatalogItem CRUD
 
     #region ProcessState CRUD
@@ -66,6 +75,10 @@ internal class MockDataRepository : IDataRepository
     public async Task<IProcessState> GetProcessState(int stateId)
     {
         return await Task.FromResult(States[stateId]);
+    }
+    public async Task<Dictionary<int, IProcessState>> GetAllProcessStates()
+    {
+        return await Task.FromResult(States);
     }
     #endregion ProcessStateCRUD
 
@@ -93,6 +106,10 @@ internal class MockDataRepository : IDataRepository
     public async Task<IEvent> GetEvent(int eventId)
     {
         return await Task.FromResult(Events[eventId]);
+    }
+    public async Task<Dictionary<int, IEvent>> GetAllEvents()
+    {
+        return await Task.FromResult(Events);
     }
     #endregion Event CRUD
 }

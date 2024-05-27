@@ -33,5 +33,16 @@ namespace Presentation.Model.Implementation
             return this.Map(await this._eventCRUD.GetEvent(eventId));
         }
 
+        public async Task<Dictionary<int, IEventModel>> GetAllEvents()
+        {
+            Dictionary<int, IEventModel> result = new Dictionary<int, IEventModel>();
+
+            foreach (IEventDTO item in (await this._eventCRUD.GetAllEvents()).Values)
+            {
+                result.Add(item.eventId, this.Map(item));
+            }
+
+            return result;
+        }
     }
 }

@@ -33,5 +33,16 @@ namespace Presentation.Model.Implementation
         {
             return this.Map(await this._stateCrud.GetProcessState(stateId));
         }
+        public async Task<Dictionary<int, IProcessStateModel>> GetAllProcessStates()
+        {
+            Dictionary<int, IProcessStateModel> result = new Dictionary<int, IProcessStateModel>();
+
+            foreach (IProcessStateDTO item in (await this._stateCrud.GetAllProcessStates()).Values)
+            {
+                result.Add(item.stateId, this.Map(item));
+            }
+
+            return result;
+        }
     }
 }

@@ -1,10 +1,5 @@
 ﻿using Services.API;
 using Presentation.Model.Implementation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Model.API
 {
@@ -18,5 +13,6 @@ namespace Presentation.Model.API
         Task DeleteEvent(int eventId);
         Task UpdateEvent(int eventId, string description, int stateId, int userId, string type);
         Task<IEventModel> GetEvent(int eventId);
+        Task<Dictionary<int, IEventModel>> GetAllEvents();
     }
 }

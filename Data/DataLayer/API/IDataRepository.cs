@@ -33,5 +33,10 @@ namespace Data.DataLayer.API
         Task <ICatalogItem> GetCatalogItem(int itemId);
         Task<IProcessState> GetProcessState(int stateId);
         Task<IEvent> GetEvent(int eventId);
+
+        Task<Dictionary<int, IUser>> GetAllUsers();
+        Task<Dictionary<int, ICatalogItem>> GetAllCatalogItems();
+        Task<Dictionary<int, IProcessState>> GetAllProcessStates();
+        Task<Dictionary<int, IEvent>> GetAllEvents();
     }
 }

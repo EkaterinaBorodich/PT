@@ -34,5 +34,16 @@ namespace Presentation.Model.Implementation
         {
             return this.Map(await this._catalogItemCRUD.GetCatalogItem(itemId));
         }
+        public async Task<Dictionary<int, ICatalogItemModel>> GetAllCatalogItems()
+        {
+            Dictionary<int, ICatalogItemModel> result = new Dictionary<int, ICatalogItemModel>();
+
+            foreach (ICatalogItemDTO item in (await this._catalogItemCRUD.GetAllCatalogItems()).Values)
+            {
+                result.Add(item.itemId, this.Map(item));
+            }
+
+            return result;
+        }
     }
 }

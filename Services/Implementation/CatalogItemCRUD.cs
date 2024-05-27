@@ -35,5 +35,16 @@ namespace Services.Implementation
         {
             return this.Map(await this._repository.GetCatalogItem(itemId));
         }
+        public async Task<Dictionary<int, ICatalogItemDTO>> GetAllCatalogItems()
+        {
+            Dictionary<int, ICatalogItemDTO> result = new Dictionary<int, ICatalogItemDTO>();
+
+            foreach (ICatalogItem item in (await this._repository.GetAllCatalogItems()).Values)
+            {
+                result.Add(item.ItemId, this.Map(item));
+            }
+
+            return result;
+        }
     }
 }

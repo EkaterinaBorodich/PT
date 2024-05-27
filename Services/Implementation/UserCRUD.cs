@@ -36,5 +36,16 @@ namespace Services.Implementation
         {
             return this.Map(await this._repository.GetUser(userId));
         }
+        public async Task<Dictionary<int, IUserDTO>> GetAllUsers()
+        {
+            Dictionary<int, IUserDTO> result = new Dictionary<int, IUserDTO>();
+
+            foreach (IUser item in (await this._repository.GetAllUsers()).Values)
+            {
+                result.Add(item.UserId, this.Map(item));
+            }
+
+            return result;
+        }
     }
 }

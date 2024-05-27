@@ -18,5 +18,7 @@ namespace Services.API
         Task DeleteProcessState(int stateId);
         Task UpdateProcessState(int stateId, string description);
         Task<IProcessStateDTO> GetProcessState(int stateId);
+
+        Task<Dictionary<int, IProcessStateDTO>> GetAllProcessStates();
     }
 }

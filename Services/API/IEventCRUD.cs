@@ -19,5 +19,7 @@ namespace Services.API
         Task DeleteEvent(int eventId);
         Task UpdateEvent(int eventId, string description, int stateId, int userId, string type);
         Task<IEventDTO> GetEvent(int eventId);
+
+        Task<Dictionary<int, IEventDTO>> GetAllEvents();
     }
 }

@@ -33,5 +33,16 @@ namespace Presentation.Model.Implementation
         {
             return this.Map(await this._userCRUD.GetUser(userId));
         }
+        public async Task<Dictionary<int, IUserModel>> GetAllUsers()
+        {
+            Dictionary<int, IUserModel> result = new Dictionary<int, IUserModel>();
+
+            foreach (IUserDTO item in (await this._userCRUD.GetAllUsers()).Values)
+            {
+                result.Add(item.userId, this.Map(item));
+            }
+
+            return result;
+        }
     }
 }

@@ -18,5 +18,6 @@ namespace Presentation.Model.API
         Task DeleteUser(int userId);
         Task UpdateUser(int userId, string userName);
         Task<IUserModel> GetUser(int userId);
+        Task<Dictionary<int, IUserModel>> GetAllUsers();
     }
 }

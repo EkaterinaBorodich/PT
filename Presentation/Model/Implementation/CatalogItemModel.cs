@@ -1,4 +1,7 @@
 ﻿using Presentation.Model.API;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("PresentationTest")]
 
 namespace Presentation.Model.Implementation
 {

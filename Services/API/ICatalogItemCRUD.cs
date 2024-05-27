@@ -15,5 +15,8 @@ namespace Services.API
 
         Task UpdateCatalogItem(int itemId, string description);
         Task<ICatalogItemDTO> GetCatalogItem(int itemId);
+
+        Task<Dictionary<int, ICatalogItemDTO>> GetAllCatalogItems();
+
     }
 }
