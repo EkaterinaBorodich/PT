@@ -51,7 +51,7 @@ internal class DataContext : IDataContext
     {
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            Database.User toDelete = context.Users.Where(u => u.UserId == UserId).FirstOrDefault()!;
+            Database.User toDelete = (from u in context.Users where u.UserId == UserId select u).FirstOrDefault()!;
             context.Users.DeleteOnSubmit(toDelete);
             await Task.Run(() => context.SubmitChanges());
         }
