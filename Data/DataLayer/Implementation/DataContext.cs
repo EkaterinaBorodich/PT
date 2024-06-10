@@ -91,9 +91,7 @@ internal class DataContext : IDataContext
     {
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            IQueryable<IUser> itemQuery = from u in context.Users
-                                          select
-                                                     new User(u.UserId, u.UserName) as IUser;
+            IQueryable<IUser> itemQuery = context.Users.Select(u => new User(u.UserId, u.UserName) as IUser);
 
             return await Task.Run(() => itemQuery.ToDictionary(k => k.UserId));
         }
@@ -161,9 +159,7 @@ internal class DataContext : IDataContext
     {
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            IQueryable<ICatalogItem> itemQuery = from c in context.CatalogItems
-                                                select
-                                                    new CatalogItem(c.ItemId, c.Description) as ICatalogItem;
+            IQueryable<ICatalogItem> itemQuery = context.CatalogItems.Select(c => new CatalogItem(c.ItemId, c.Description) as ICatalogItem);
 
             return await Task.Run(() => itemQuery.ToDictionary(k => k.ItemId));
         }
@@ -231,9 +227,7 @@ internal class DataContext : IDataContext
     {
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            IQueryable<IProcessState> itemQuery = from ps in context.ProcessStates
-                                                 select
-                                                     new ProcessState(ps.StateId, ps.Description) as IProcessState;
+            IQueryable<IProcessState> itemQuery = context.ProcessStates.Select(ps => new ProcessState(ps.StateId, ps.Description) as IProcessState);
 
             return await Task.Run(() => itemQuery.ToDictionary(k => k.StateId));
         }
@@ -307,9 +301,7 @@ internal class DataContext : IDataContext
     {
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            IQueryable<IEvent> itemQuery = from e in context.Events
-                                                 select
-                                                     new Event(e.EventId, e.Description, e.StateId, e.UserId, e.Type) as IEvent;
+            IQueryable<IEvent> itemQuery = context.Events.Select(e => new Event(e.EventId, e.Description, e.StateId, e.UserId, e.Type) as IEvent);
 
             return await Task.Run(() => itemQuery.ToDictionary(k => k.EventId));
         }
