@@ -11,7 +11,6 @@ using System.ComponentModel;
 
 namespace Data.DataLayer.Implementation;
 
-
 internal class DataContext : IDataContext
 {
     public DataContext(string? connectionString = null)
@@ -34,7 +33,7 @@ internal class DataContext : IDataContext
 
     public async Task AddUser(IUser user)
     {
-        using(LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
+        using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
             Database.User entity = new Database.User()
             {
@@ -50,9 +49,9 @@ internal class DataContext : IDataContext
 
     public async Task DeleteUser(int UserId)
     {
-        using(LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
+        using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            Database.User toDelete = (from  u in context.Users  where u.UserId == UserId select u).FirstOrDefault()!;
+            Database.User toDelete = context.Users.Where(u => u.UserId == UserId).FirstOrDefault()!;
             context.Users.DeleteOnSubmit(toDelete);
             await Task.Run(() => context.SubmitChanges());
         }
@@ -60,9 +59,9 @@ internal class DataContext : IDataContext
 
     public async Task UpdateUser(IUser user)
     {
-        using(LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
+        using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            Database.User toUpdate = (from u in context.Users where u.UserId == user.UserId select u).FirstOrDefault()!;
+            Database.User toUpdate = context.Users.Where(u => u.UserId == user.UserId).FirstOrDefault()!;
             toUpdate.UserName = user.UserName;
 
             await Task.Run(() => context.SubmitChanges());
@@ -71,17 +70,11 @@ internal class DataContext : IDataContext
 
     public async Task<IUser?> GetUser(int UserId)
     {
-        using(LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
+        using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
             Database.User? user = await Task.Run(() =>
-            {
-                IQueryable<Database.User> query =
-                from u in context.Users
-                where u.UserId == UserId
-                select u;
-
-                return query.FirstOrDefault();
-            });
+                context.Users.Where(u => u.UserId == UserId).FirstOrDefault()
+            );
 
             return user is not null ? new User(user.UserId, user.UserName) : null;
         }
@@ -120,7 +113,7 @@ internal class DataContext : IDataContext
     {
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            Database.CatalogItem toDelete = (from c in context.CatalogItems where c.ItemId == itemId select c).FirstOrDefault()!;
+            Database.CatalogItem toDelete = context.CatalogItems.Where(c => c.ItemId == itemId).FirstOrDefault()!;
 
             context.CatalogItems.DeleteOnSubmit(toDelete);
 
@@ -131,7 +124,7 @@ internal class DataContext : IDataContext
     {
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            Database.CatalogItem toUpdate = (from c in context.CatalogItems where c.ItemId == item.ItemId select c).FirstOrDefault()!;
+            Database.CatalogItem toUpdate = context.CatalogItems.Where(c => c.ItemId == item.ItemId).FirstOrDefault()!;
 
             toUpdate.Description = item.Description;
 
@@ -144,16 +137,10 @@ internal class DataContext : IDataContext
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
             Database.CatalogItem? item = await Task.Run(() =>
-            {
-                IQueryable<Database.CatalogItem> query =
-                    from c in context.CatalogItems
-                    where c.ItemId == itemId
-                    select c;
+                context.CatalogItems.Where(c => c.ItemId == itemId).FirstOrDefault()
+            );
 
-                return query.FirstOrDefault();
-            });
-
-            return item is not null ? new CatalogItem(item.ItemId,item.Description) : null;
+            return item is not null ? new CatalogItem(item.ItemId, item.Description) : null;
         }
     }
 
@@ -162,8 +149,8 @@ internal class DataContext : IDataContext
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
             IQueryable<ICatalogItem> itemQuery = from c in context.CatalogItems
-                                                select
-                                                    new CatalogItem(c.ItemId, c.Description) as ICatalogItem;
+                                                 select
+                                                     new CatalogItem(c.ItemId, c.Description) as ICatalogItem;
 
             return await Task.Run(() => itemQuery.ToDictionary(k => k.ItemId));
         }
@@ -190,7 +177,7 @@ internal class DataContext : IDataContext
     {
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            Database.ProcessState toDelete = (from ps in context.ProcessStates where ps.StateId == StateId select ps).FirstOrDefault()!;
+            Database.ProcessState toDelete = context.ProcessStates.Where(ps => ps.StateId == StateId).FirstOrDefault()!;
             context.ProcessStates.DeleteOnSubmit(toDelete);
             await Task.Run(() => context.SubmitChanges());
         }
@@ -198,9 +185,9 @@ internal class DataContext : IDataContext
 
     public async Task UpdateProcessState(IProcessState processState)
     {
-        using(LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
+        using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            Database.ProcessState toUpdate = (from ps in context.ProcessStates where ps.StateId == processState.StateId select ps).FirstOrDefault()!;
+            Database.ProcessState toUpdate = context.ProcessStates.Where(ps => ps.StateId == processState.StateId).FirstOrDefault()!;
 
             toUpdate.StateId = processState.StateId;
             toUpdate.Description = processState.Description;
@@ -211,17 +198,11 @@ internal class DataContext : IDataContext
 
     public async Task<IProcessState?> GetProcessState(int StateId)
     {
-        using(LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
+        using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
             Database.ProcessState? pstate = await Task.Run(() =>
-            {
-                IQueryable<Database.ProcessState> query =
-                from ps in context.ProcessStates
-                where ps.StateId == StateId 
-                select ps;
-
-                return query.FirstOrDefault();
-            });
+                context.ProcessStates.Where(ps => ps.StateId == StateId).FirstOrDefault()
+            );
 
             return pstate is not null ? new ProcessState(pstate.StateId, pstate.Description) : null;
         }
@@ -232,8 +213,8 @@ internal class DataContext : IDataContext
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
             IQueryable<IProcessState> itemQuery = from ps in context.ProcessStates
-                                                 select
-                                                     new ProcessState(ps.StateId, ps.Description) as IProcessState;
+                                                  select
+                                                      new ProcessState(ps.StateId, ps.Description) as IProcessState;
 
             return await Task.Run(() => itemQuery.ToDictionary(k => k.StateId));
         }
@@ -244,7 +225,7 @@ internal class DataContext : IDataContext
 
     public async Task AddEvent(IEvent even)
     {
-        using(LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
+        using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
             Database.Event entity = new Database.Event()
             {
@@ -263,9 +244,9 @@ internal class DataContext : IDataContext
 
     public async Task DeleteEvent(int EventId)
     {
-        using(LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
+        using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            Database.Event toDelete = (from e in context.Events where e.EventId == EventId select e).FirstOrDefault()!;
+            Database.Event toDelete = context.Events.Where(e => e.EventId == EventId).FirstOrDefault()!;
             context.Events.DeleteOnSubmit(toDelete);
             await Task.Run(() => context.SubmitChanges());
         }
@@ -275,7 +256,7 @@ internal class DataContext : IDataContext
     {
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
-            Database.Event toUpdate = (from e in context.Events where e.EventId == even.EventId select e).FirstOrDefault()!;
+            Database.Event toUpdate = context.Events.Where(e => e.EventId == even.EventId).FirstOrDefault()!;
             toUpdate.Description = even.Description;
             toUpdate.StateId = even.StateId;
             toUpdate.UserId = even.UserId;
@@ -290,16 +271,10 @@ internal class DataContext : IDataContext
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
             Database.Event? even = await Task.Run(() =>
-            {
-                IQueryable<Database.Event> query =
-                from e in context.Events
-                where e.EventId == EventId
-                select e;
+                context.Events.Where(e => e.EventId == EventId).FirstOrDefault()
+            );
 
-                return query.FirstOrDefault();
-            });
-
-            return even is not null ? new Event(even.EventId, even.Description, even.StateId, even.UserId,even.Type) : null;
+            return even is not null ? new Event(even.EventId, even.Description, even.StateId, even.UserId, even.Type) : null;
         }
     }
 
@@ -308,8 +283,8 @@ internal class DataContext : IDataContext
         using (LibraryDataContext context = new LibraryDataContext(this.ConnectionString))
         {
             IQueryable<IEvent> itemQuery = from e in context.Events
-                                                 select
-                                                     new Event(e.EventId, e.Description, e.StateId, e.UserId, e.Type) as IEvent;
+                                           select
+                                               new Event(e.EventId, e.Description, e.StateId, e.UserId, e.Type) as IEvent;
 
             return await Task.Run(() => itemQuery.ToDictionary(k => k.EventId));
         }
